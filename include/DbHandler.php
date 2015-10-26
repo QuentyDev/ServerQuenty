@@ -238,9 +238,22 @@ class DbHandler {
      * @param String $user_id user id to whom task belongs to
      * @param String $task task text
      */
-    public function createProject($projectID, $nombre, $descripcionLarga, $descripcionCorta, $monto, $diasvigencia, $urlImage, $categoria, $ciudad, $estado, $socialID, $usuario) {
-        $stmt = $this->conn->prepare("INSERT INTO tasks(task) VALUES(?)");
-        $stmt->bind_param("s", $task);
+    
+    
+    public function createProject($nombre, $descripcionLarga, $descripcionCorta, $monto, $diasvigencia, $urlImage, $categoria, $ciudad, $estado, $socialID) {         
+        $stmt = $this->conn->prepare("CALL P_CREATE_PROJECT(:nombre,:descl,:descc,:monto,:dias,:url,:cat,:ciudad,:estado,:soc");
+        
+        $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);        
+        $stmt->bindParam(':descl', $descripcionLarga, PDO::PARAM_STR);
+        $stmt->bindParam(':descc', $descripcionCorta, PDO::PARAM_STR);
+        $stmt->bindParam(':monto', $monto, PDO::PARAM_INT);
+        $stmt->bindParam(':dias', $diasvigencia, PDO::PARAM_INT);
+        $stmt->bindParam(':url', $urlImage, PDO::PARAM_STR);
+        $stmt->bindParam(':cat', $categoria, PDO::PARAM_STR);
+        $stmt->bindParam(':ciudad', $ciudad, PDO::PARAM_STR);
+        $stmt->bindParam(':estado', $estado, PDO::PARAM_STR);
+        $stmt->bindParam(':soc', $socialID, PDO::PARAM_INT);
+        
         $result = $stmt->execute();
         $stmt->close();
 
@@ -248,14 +261,14 @@ class DbHandler {
             // task row created
             // now assign the task to user
             $new_task_id = $this->conn->insert_id;
-            $res = $this->createUserTask($user_id, $new_task_id);
-            if ($res) {
+//            $res = $this->createUserTask($user_id, $new_task_id);
+//            if ($res) {
                 // task created successfully
                 return $new_task_id;
-            } else {
+//            } else {
                 // task failed to create
-                return NULL;
-            }
+//                return NULL;
+//            }
         } else {
             // task failed to create
             return NULL;
@@ -299,6 +312,11 @@ class DbHandler {
         return $projects;
     }
 
+    
+//    public funcion postComment(v_comentario,v_proyectoID,socialID){
+//        
+//    }
+//            
     /**
      * Fetching all user tasks
      * @param String $user_id id of the user

@@ -74,14 +74,12 @@ $app->post('/projects', function() use ($app) {
     $categoria = $app->request->post('categoria');
     $ciudad = $app->request->post('ciudad');
     $estado = $app->request->post('estado');
-    $socialID = $app->request->post('socialID');    
+    $socialID = $app->request->post('socialID');
 
     $db = new DbHandler();
 
     // creating new task
-    $task_id = $db->createProject($projectID, $nombre, $descripcionLarga, 
-            $descripcionCorta, $monto, $diasvigencia, $urlImage, $categoria, 
-            $ciudad, $estado, $socialID);
+    $task_id = $db->createProject($projectID, $nombre, $descripcionLarga, $descripcionCorta, $monto, $diasvigencia, $urlImage, $categoria, $ciudad, $estado, $socialID);
 
     if ($task_id != NULL) {
         $response["error"] = false;
@@ -94,6 +92,39 @@ $app->post('/projects', function() use ($app) {
         echoRespnse(200, $response);
     }
 });
+
+
+$app->post('/comments', function() use ($app) {
+    $response = array();
+    $db = new DbHandler();
+
+    // fetching all user tasks
+    $result = $db->getAllProjects();
+
+    $response["error"] = false;
+    $response["message"] = array();
+
+    // looping through result and preparing tasks array
+    while ($project = $result->fetch_assoc()) {
+
+        $tmp = array();
+        $tmp["nombre"] = $project["nombre"];
+        $tmp["descripcionLarga"] = $project["descripcion_larga"];
+        $tmp["descripcionCorta"] = $project["descripcion_corta"];
+        $tmp["monto"] = $project["monto"];
+        $tmp["diasVigencia"] = $project["diasvigencia"];
+        $tmp["proyectoID"] = $project["proyectoID"];
+        $tmp["categoria"] = $project["categoria"];
+        $tmp["ciudad"] = $project["ciudad"];
+        $tmp["estado"] = $project["estado"];
+        $tmp["usuarioID"] = $project["usuarioID"];
+        $tmp["usuario"] = $project["usuario"];
+
+        array_push($response["message"], $tmp);
+    }
+    echoRespnse(200, $response);
+}
+);
 
 /**
  * Verifying required params posted or not
