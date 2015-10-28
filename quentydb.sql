@@ -111,7 +111,6 @@ CREATE TABLE `contribucion` (
   `contribucionID` int(11) NOT NULL AUTO_INCREMENT,
   `usuarioID` int(11) DEFAULT NULL,
   `proyectoID` int(11) DEFAULT NULL,
-  `inversionistaID` int(11) DEFAULT NULL,
   PRIMARY KEY (`contribucionID`),
   KEY `FK_Contribucion_Usuario` (`usuarioID`),
   KEY `FK_Contribucion_Proyecto` (`proyectoID`),
@@ -257,6 +256,7 @@ CREATE TABLE `proyecto` (
   `ciudadID` int(11) DEFAULT NULL,
   `estadoID` int(11) DEFAULT NULL,
   `usuarioID` int(11) DEFAULT NULL,
+  `fecha_registro` date DEFAULT NULL,
   PRIMARY KEY (`proyectoID`),
   KEY `FK_Proyecto_Categoria` (`categoriaID`),
   KEY `FK_Proyecto_Ciudad` (`ciudadID`),
@@ -266,7 +266,7 @@ CREATE TABLE `proyecto` (
   CONSTRAINT `FK_Proyecto_Ciudad` FOREIGN KEY (`ciudadID`) REFERENCES `ciudad` (`ciudadID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_Proyecto_Estado` FOREIGN KEY (`estadoID`) REFERENCES `estado` (`estadoID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_Proyecto_Usuario` FOREIGN KEY (`usuarioID`) REFERENCES `usuario` (`usuarioID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -275,7 +275,7 @@ CREATE TABLE `proyecto` (
 
 LOCK TABLES `proyecto` WRITE;
 /*!40000 ALTER TABLE `proyecto` DISABLE KEYS */;
-INSERT INTO `proyecto` VALUES ('Super Dungeon Explore: Legends','Super Dungeon Explore is a combat board game inspired by classic hack-and-slash video games. But that is only the beginning. Super Dungeon is also built upon a deep love for classic Japanese roleplaying games (JRPGs), adventure games, and traditional pencil-and-paper tabletop games. Super Dungeon Legends draws its inspiration from these well loved genres to allow players to craft their own stories in the world of Crystalia.','Super Dungeon Explore, the chibi board game, returns with LEGENDS — featuring a new starter box, campaign play, and RPG action!',80000,30,'Super_dungeon.jpg',2,9,2,1,8),('Toys 2.0: Smart Toy Robots, Built by Kids - Cannybots',NULL,'LEGO compatible, smart robotic toy car. Give your child a head start in programming, robotics, A.I. and 3D printing.',40000,30,'Cannybots.jpg',5,14,5,1,9);
+INSERT INTO `proyecto` VALUES ('Super Dungeon Explore: Legends','Super Dungeon Explore is a combat board game inspired by classic hack-and-slash video games. But that is only the beginning. Super Dungeon is also built upon a deep love for classic Japanese roleplaying games (JRPGs), adventure games, and traditional pencil-and-paper tabletop games. Super Dungeon Legends draws its inspiration from these well loved genres to allow players to craft their own stories in the world of Crystalia.','Super Dungeon Explore, the chibi board game, returns with LEGENDS — featuring a new starter box, campaign play, and RPG action!',80000,30,'Super_dungeon.jpg',2,9,2,1,8,NULL),('Toys 2.0: Smart Toy Robots, Built by Kids - Cannybots','Dear Parents - Meet Cannybots! The smart robotic toy car to introduce your little genius to programming, robotics, A.I. and 3D printing.','LEGO compatible, smart robotic toy car. Give your child a head start in programming, robotics, A.I. and 3D printing.',40000,30,'Cannybots.jpg',5,14,5,1,9,NULL),('HUDWAY Glass: keeps your eyes on the road while driving','We introduced the early prototype of HUDWAY Glass at CeBIT 2015 in Hannover for the first time. It is a simple accessory, which turns any smartphone into a head-up display. Moreover, it eliminates many issues associated with projecting an image onto a windshield, including doubling of the image, lack of reflection during daytime, image size and a few others. We received very positive response from potential customers, dealers and retailers, as well as from many major representatives of the automotive industry.','A universal vehicle accessory turning your smartphone into a head-up display (HUD) for any car',100000,30,'headup.jpg',6,14,6,1,8,NULL),('Range Dial. Better looking, smarter cooking thermometer','Cooking can be a joy when you make a delicious meal, a disappointment when you get it wrong, and disaster when you present the charred, leathery wreckage to your hungry friends and family. That\'s why we created Range Dial — a precision cooking thermometer that works with or without your smartphone. Range helps you achieve that kitchen joy whether it\'s grilling, baking, brewing, or candymaking. Range Dial is the evolution of our previously Kickstarted thermometer, Range. We\'ve learned a lot from how our customers use Range, and added the top requests: Bluetooth for wireless monitoring, and a second probe for ambient temperature. But we also thought carefully about the friction points and how we could address them. Range Dial works with or without a smartphone. Having a connected device shouldn\'t mean you have to mess with an app for the most basic functions. Just plug in the probe and turn the dial to a preset—Range Dial will beep at you, and you\'ll also get a push notification on your phone when your food is done. Or open the app to have full control. It\'s the best of both worlds.','A precision Bluetooth cooking tool with or without your iPhone. Tinker with your recipes, not your tools.',60000,30,'cooking.jpg',7,14,3,1,8,'2015-10-26');
 /*!40000 ALTER TABLE `proyecto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -397,6 +397,7 @@ CREATE TABLE `usuario` (
   `usuarioID` int(11) NOT NULL AUTO_INCREMENT,
   `ciudadID` int(11) DEFAULT NULL,
   `tipoUsuarioID` int(11) NOT NULL,
+  `email` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`usuarioID`),
   KEY `FK_Usuario_Ciudad` (`ciudadID`),
   KEY `FK_Usuario_TipoUsuario` (`tipoUsuarioID`),
@@ -411,7 +412,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (73872876,'Av. St. Louis No.315','Alexander','Robles',NULL,8,1,2),(74782693,'Av. Illinois','Benjamin ','Alvarez',NULL,9,2,2),(94639876,'Av. Alemania','Roger','Alcantara',NULL,10,3,2),(12739876,'Av. Jhonny R. No 2345','Felipe','Brahim',NULL,11,4,2),(49848798,'Av. Luxemburgo','Daniela','Nogales',NULL,12,5,2),(42098078,'Av. Jaramillo No 3298','Alejandra','Herrera',NULL,13,6,2),(29879032,'Av. Turquia','Fernanda','Rivera',NULL,14,6,1);
+INSERT INTO `usuario` VALUES (73872876,'Av. St. Louis No.315','Alexander','Robles',4367,8,1,2,NULL),(74782693,'Av. Illinois','Benjamin ','Alvarez',2375,9,2,2,NULL),(94639876,'Av. Alemania','Roger','Alcantara',2341,10,3,2,NULL),(12739876,'Av. Jhonny R. No 2345','Felipe','Brahim',7685,11,4,2,NULL),(49848798,'Av. Luxemburgo','Daniela','Nogales',2323,12,5,2,NULL),(42098078,'Av. Jaramillo No 3298','Alejandra','Herrera',3467,13,6,2,NULL),(29879032,'Av. Turquia','Fernanda','Rivera',6532,14,6,1,NULL);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -439,6 +440,149 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Dumping routines for database 'a9914047_quentyd'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `p_comentar` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_comentar`(in v_comentario varchar(300),  in v_proyectoID INT(11), in v_socialID int(11) )
+BEGIN
+	declare usuarioID int(11);
+    select u.usuarioID into usuarioID
+    from usuario u
+    where u.socialID=v_socialID;
+    
+	insert into comentario(comentario, valido, proyectoID, usuarioID)
+    values(v_comentario,1,v_proyectoID,usuarioID);
+    
+    commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `p_create_project` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_create_project`(in v_nombre varchar(100), in v_descripcionLarga varchar(4000), in v_descripcionCorta varchar(200), in v_monto int(11), in v_diasvigencia int(11), in v_url_image varchar(200),IN v_categoria varchar(100), IN v_ciudad varchar(100), in v_estado varchar(100), in v_socialID int)
+BEGIN
+   	declare categoriaID , ciudadID,estadoID, usuarioID int;
+    
+    select cat.categoriaID into categoriaID
+			from categoria cat
+			where cat.nombre=v_categoria;
+            
+	select ci.ciudadID into ciudadID
+			from ciudad ci
+			where ci.nombre=v_ciudad;
+            
+	select e.estadoID into estadoID
+			from estado e
+			where e.nombre=v_estado;		
+
+	select u.usuarioID into usuarioID
+			from usuario u
+			where u.socialID=v_socialID;
+            
+	insert into proyecto(nombre, descripcion_larga,descripcion_corta,monto,diasvigencia,
+ 						url_image, categoriaID, ciudadID, estadoID, usuarioID, fecha_registro)
+ 	values(v_nombre,v_descripcionLarga,v_descripcionCorta,v_monto,v_diasvigencia,v_url_image,categoriaID,ciudadID,estadoID,usuarioID,curdate())
+ 	;			
+    commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `p_donar` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_donar`(v_monto int(11),v_social_id int(11),v_proyecto_id int(11))
+BEGIN
+	declare usuario_id int(11);
+    
+    select usuarioID into usuario_id
+    from usuario u
+    where u.socialID=v_social_id;
+    
+	insert into contribucion(valido, visible, estado, monto, contribucionID, usuarioID, proyectoID)
+    values(1,1,1,v_monto,null,usuario_id,v_proyecto_id);
+    commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `p_registrar_datos` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_registrar_datos`(v_nro_telefono int(11),
+										v_direccion varchar(50),
+										v_nombre varchar(50),
+										v_apellidos varchar(50),
+										v_socialID int(11),
+                                        v_email varchar(50),
+										v_ciudad varchar(50))
+BEGIN
+		declare _usuarioID,_ciudadID int(11);
+        
+		select u.usuarioID into _usuarioID
+        from usuario u
+        where u.socialID=v_social_id;
+        
+        select ci.ciudadID into _ciudadID
+        from ciudad ci
+        where ci.nombre=v_ciudad;
+        
+        update usuario set nro_telefono=v_nro_telefono,
+							direccion=v_direccion,
+                            nombre=v_nombre,
+                            apellidos=v_apellidos,
+                            ciudadID=_ciudadID,
+                            email=v_email
+					   where usuarioID=_usuarioID;
+                       
+commit;                       
+                            
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
 -- Final view structure for view `v_proyecto`
 --
 
@@ -451,7 +595,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `v_proyecto` AS select `p`.`proyectoID` AS `proyectoID`,`p`.`nombre` AS `nombre`,`p`.`descripcion_larga` AS `descripcion_larga`,`p`.`descripcion_corta` AS `descripcion_corta`,`p`.`monto` AS `monto`,`p`.`diasvigencia` AS `diasvigencia`,`p`.`url_image` AS `url_image`,`c`.`nombre` AS `categoria`,`c`.`nombre` AS `ciudad`,`e`.`nombre` AS `estado`,`u`.`usuarioID` AS `usuarioID`,`u`.`nombre` AS `usuario` from ((((`proyecto` `p` join `estado` `e`) join `categoria` `c`) join `usuario` `u`) join `ciudad` `ci`) where ((`e`.`nombre` = 'APROBADO') and (`p`.`estadoID` = `e`.`estadoID`) and (`p`.`categoriaID` = `c`.`categoriaID`) and (`p`.`ciudadID` = `ci`.`ciudadID`)) */;
+/*!50001 VIEW `v_proyecto` AS select `p`.`proyectoID` AS `proyectoID`,`p`.`nombre` AS `nombre`,`p`.`descripcion_larga` AS `descripcion_larga`,`p`.`descripcion_corta` AS `descripcion_corta`,`p`.`monto` AS `monto`,`p`.`diasvigencia` AS `diasvigencia`,`p`.`url_image` AS `url_image`,`c`.`nombre` AS `categoria`,`c`.`nombre` AS `ciudad`,`e`.`nombre` AS `estado`,`u`.`usuarioID` AS `usuarioID`,`u`.`nombre` AS `usuario` from ((((`proyecto` `p` join `estado` `e`) join `categoria` `c`) join `usuario` `u`) join `ciudad` `ci`) where ((`e`.`nombre` = 'APROBADO') and (`p`.`estadoID` = `e`.`estadoID`) and (`p`.`categoriaID` = `c`.`categoriaID`) and (`p`.`ciudadID` = `ci`.`ciudadID`) and (`p`.`usuarioID` = `u`.`usuarioID`)) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -465,4 +609,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-10-25 23:09:12
+-- Dump completed on 2015-10-27  0:31:39

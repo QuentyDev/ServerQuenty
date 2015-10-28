@@ -51,6 +51,7 @@ $app->get('/projects', function() {
         $tmp["estado"] = $project["estado"];
         $tmp["usuarioID"] = $project["usuarioID"];
         $tmp["usuario"] = $project["usuario"];
+        $tmp["urlImage"] = $project["url_image"];
 
         array_push($response["message"], $tmp);
     }
@@ -95,6 +96,63 @@ $app->post('/projects', function() use ($app) {
 
 
 $app->post('/comments', function() use ($app) {
+    $response = array();
+    $db = new DbHandler();
+
+    // fetching all user tasks        
+    
+    $socialID = $app->request->post('socialID');
+    $proyectoID= $app->request->post('proyectoID');
+    $comentario= $app->request->post('comentario');    
+    
+    $db = new DbHandler();
+
+    // creating new task
+    $task_id = $db->createComment($comentario,$proyectoID,$socialID);
+
+    if ($task_id != NULL) {
+        $response["error"] = false;
+        $response["message"] = "";
+//        $response["task_id"] = $task_id;
+        echoRespnse(201, $response);
+    } else {
+        $response["error"] = true;
+        $response["message"] = "Failed to create task. Please try again";
+        echoRespnse(200, $response);
+    }    
+}
+);
+/*
+ * get comentarios
+ */
+$app->get('/comments', function() use ($app) {
+    $response = array();
+    $db = new DbHandler();
+
+    // fetching all user tasks
+    $result = $db->getAllComments();
+
+    $response["error"] = false;
+    $response["message"] = array();
+
+    // looping through result and preparing tasks array
+    while ($project = $result->fetch_assoc()) {
+        $tmp = array();
+        $tmp["nombre"] = $project["nombre"];
+        $tmp["socialID"] = $project["socialID"];
+        $tmp["proyectoID"] = $project["proyectoID"];
+        $tmp["comentario"] = $project["comentario"];
+        $tmp["fecha_comentario"] = $project["fecha_comentario"];
+        
+
+        array_push($response["message"], $tmp);
+    }
+    echoRespnse(200, $response);
+}
+);
+
+
+$app->post('/donar', function() use ($app) {
     $response = array();
     $db = new DbHandler();
 

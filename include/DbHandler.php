@@ -241,7 +241,7 @@ class DbHandler {
     
     
     public function createProject($nombre, $descripcionLarga, $descripcionCorta, $monto, $diasvigencia, $urlImage, $categoria, $ciudad, $estado, $socialID) {         
-        $stmt = $this->conn->prepare("CALL P_CREATE_PROJECT(:nombre,:descl,:descc,:monto,:dias,:url,:cat,:ciudad,:estado,:soc");
+        $stmt = $this->conn->prepare("CALL P_CREATE_PROJECT(:nombre,:descl,:descc,:monto,:dias,:url,:cat,:ciudad,:estado,:soc);");
         
         $stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);        
         $stmt->bindParam(':descl', $descripcionLarga, PDO::PARAM_STR);
@@ -274,6 +274,59 @@ class DbHandler {
             return NULL;
         }
     }
+    
+    /*
+     * registrar comentario
+     */
+        
+    public function createComment($comentario,$proyectoID,$socialID ) {
+        
+//        $stmt = $this->conn->prepare("CALL p_comentar(?,?,?);");
+        
+        // Prepare IN and OUT parameters
+        $this->conn->query("SET @un = " . "'" . $this->conn->real_escape_string($comentario) . "'");
+        $this->conn->query("SET @dos = " . $this->conn->real_escape_string($proyectoID) );
+        $this->conn->query("SET @tres = " . $this->conn->real_escape_string($socialID));
+        
+
+        // Call sproc 
+        // IsSupervisor(IN username CHAR(20), OUT success BOOLEAN)
+        if(!$this->conn->query("CALL p_comentar(@un, @dos,@tres)")){
+            die("CALL failed: (" . $mysqli->errno . ") " . $mysqli->error);
+        }
+//
+//        // Fetch OUT parameters 
+//        if (!($res = $mysqli->query("SELECT @result AS result")))
+//            die("Fetch failed: (" . $mysqli->errno . ") " . $mysqli->error);
+//        $row = $res->fetch_assoc();
+//
+//        
+//        $stmt->bindParam("s", $comentario, PDO::PARAM_STR);        
+//        $stmt->bindParam("i", $proyectoID, PDO::PARAM_INT|PDO::PARAM_INPUT_OUTPUT);
+//        $stmt->bindParam(3, $socialID, PDO::PARAM_INT|PDO::PARAM_INPUT_OUTPUT);
+//        
+//        $result = $stmt->execute();
+//        $stmt->close();
+
+//        if ($res) {
+            // task row created
+            // now assign the task to user
+//            $new_task_id = $this->conn->insert_id;
+//            $res = $this->createUserTask($user_id, $new_task_id);
+//            if ($res) {
+                // task created successfully
+//                return $new_task_id;
+                return "1";
+//            } else {
+                // task failed to create
+//                return NULL;
+//            }
+//        } else {
+            // task failed to create
+//            return NULL;
+    
+        }
+//    }
 
     /**
      * Fetching single task
@@ -312,8 +365,16 @@ class DbHandler {
         return $projects;
     }
 
+    public function getAllComments() {
+        $stmt = $this->conn->prepare("select * from v_comentario;");
+//        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $projects = $stmt->get_result();
+        $stmt->close();
+        return $projects;
+    }
     
-//    public funcion postComment(v_comentario,v_proyectoID,socialID){
+//    public funcion postComment(dv_comentario,v_proyectoID,socialID){
 //        
 //    }
 //            
